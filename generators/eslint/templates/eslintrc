@@ -1,0 +1,8 @@
+---
+extends:
+  - "defaults/configurations/walmart/es6-node"
+  - "defaults/rules/eslint/es6/walmart"
+
+env:
+  "mocha": true
+  "phantom": true

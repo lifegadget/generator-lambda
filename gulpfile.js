@@ -6,7 +6,6 @@ var excludeGitignore = require('gulp-exclude-gitignore');
 var mocha = require('gulp-mocha');
 var istanbul = require('gulp-istanbul');
 var nsp = require('gulp-nsp');
-var plumber = require('gulp-plumber');
 
 gulp.task('static', function () {
   return gulp.src(['**/*.js', '!**/templates/**'])
@@ -29,11 +28,10 @@ gulp.task('pre-test', function () {
     .pipe(istanbul.hookRequire());
 });
 
-gulp.task('test', ['pre-test'], function (cb) {
+gulp.task('test', gulp.series('pre-test'), function (cb) {
   var mochaErr;
 
   gulp.src('test/**/*.js')
-    .pipe(plumber())
     .pipe(mocha({reporter: 'spec', timeout: 4000}))
     .on('error', function (err) {
       mochaErr = err;
@@ -48,5 +46,5 @@ gulp.task('watch', function () {
   gulp.watch(['**/*.js', 'test/**'], ['test']);
 });
 
-gulp.task('prepublish', ['nsp']);
-gulp.task('default', ['static', 'test']);
+gulp.task('prepublish', gulp.series('nsp'));
+gulp.task('default', gulp.series('static', 'test'));

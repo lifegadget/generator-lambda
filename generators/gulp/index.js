@@ -47,14 +47,15 @@ module.exports = generators.Base.extend({
 
       extend(pkg, {
         devDependencies: {
-          'gulp': '^3.9.0',
+          'gulp': 'gulpjs/gulp.git#4.0',
           'gulp-eslint': '^2.0.0',
           'gulp-exclude-gitignore': '^1.0.0',
           'gulp-line-ending-corrector': '^1.0.1',
-          'gulp-istanbul': '^0.10.3',
-          'gulp-mocha': '^2.0.0',
-          'gulp-plumber': '^1.0.0',
-          'gulp-nsp': '^2.1.0'
+          'gulp-istanbul': '^0.10.4',
+          'gulp-mocha': '^2.2.0',
+          'gulp-nsp': '^2.1.0',
+          'gulp-shell': '^0.5.2',
+          'chalk': '^1.1.3'
         },
         scripts: {
           prepublish: 'gulp prepublish',
@@ -63,14 +64,15 @@ module.exports = generators.Base.extend({
       });
 
       if (this.options.coveralls) {
-        pkg.devDependencies['gulp-coveralls'] = '^0.1.0';
+        pkg.devDependencies['gulp-coveralls'] = '^0.1.4';
       }
 
       if (this.options.babel) {
-        pkg.devDependencies['gulp-babel'] = '^5.1.0';
-        pkg.devDependencies.del = '^2.0.2';
-        pkg.devDependencies['babel-core'] = '^5.5.0';
-        pkg.devDependencies.isparta = '^3.0.3';
+        pkg.devDependencies['gulp-babel'] = '^6.1.2';
+        pkg.devDependencies.del = '^2.2.0';
+        pkg.devDependencies['babel-core'] = '^6.7.6';
+        pkg.devDependencies['babel-preset-es2015-node4'] = '^2.1.0';
+        pkg.devDependencies.isparta = '^4.0.0';
       }
 
       if (this.options.cli) {
@@ -118,6 +120,12 @@ module.exports = generators.Base.extend({
       this.fs.copy(
         this.templatePath('babelrc'),
         this.destinationPath(this.options.generateInto, '.babelrc')
+      );
+
+      // add .languagebabel to have babel transpile on save
+      this.fs.copy(
+        this.templatePath('languagebabel'),
+        this.destinationPath(this.options.generateInto, '.languagebabel')
       );
 
       // Add dist/ to the .gitignore file

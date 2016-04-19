@@ -15,7 +15,7 @@ module.exports = generators.Base.extend({
 
     this.option('es2015', {
       required: false,
-      defaults: false,
+      defaults: true,
       desc: 'Allow ES2015 syntax'
     });
   },
@@ -24,21 +24,24 @@ module.exports = generators.Base.extend({
     var pkg = this.fs.readJSON(this.destinationPath(this.options.generateInto, 'package.json'), {});
 
     var eslintConfig = {
-      extends: 'xo-space',
       env: {
         mocha: true
       }
     };
     var devDep = {
-      'eslint': '^2.1.0',
-      'eslint-config-xo-space': '^0.10.0'
+      'eslint': '^2.8.0',
+      'eslint-config-defaults': 'walmartlabs/eslint-config-defaults#feature/update-to-eslint-2'
     };
 
     if (this.options.es2015) {
-      devDep['babel-eslint'] = '^4.1.8';
-      devDep['eslint-plugin-babel'] = '^3.1.0';
-      eslintConfig.extends = 'xo-space/esnext';
+      devDep['babel-eslint'] = '^6.0.2';
+      devDep['eslint-plugin-babel'] = '^3.2.0';
     }
+
+    this.fs.copy(
+      this.templatePath('eslintrc'),
+      this.destinationPath(this.options.generateInto, '.eslintrc')
+    );
 
     extend(pkg, {
       devDependencies: devDep,

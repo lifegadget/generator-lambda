@@ -162,6 +162,7 @@ module.exports = generators.Base.extend({
       }, {
         name: 'keywords',
         message: 'Package keywords (comma to split)',
+        default: 'lambda,micro-service',
         when: !this.pkg.keywords,
         filter: function (words) {
           return words.split(/\s*,\s*/g);
